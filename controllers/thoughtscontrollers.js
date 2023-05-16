@@ -70,4 +70,50 @@ async addThoughts(req, res) {
         .catch(err => res.json(err));
 },
 
+// Add a reaction to a user
+async addreaction(req, res) {
+    console.log('You are adding an reaction');
+    console.log(req.body);
+
+    try {
+      const user = await user.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $addToSet: { reactions: req.body } },
+        { runValidators: true, new: true }
+      );
+
+      if (!user) {
+        return res
+          .status(404)
+          .json({ message: 'No user found with that ID :(' });
+      }
+
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+// Remove reaction from a user
+async removereaction(req, res) {
+    try {
+      const user = await user.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $pull: { reaction: { reactionId: req.params.reactionId } } },
+        { runValidators: true, new: true }
+      );
+
+      if (!user) {
+        return res
+          .status(404)
+          .json({ message: 'No user found with that ID :(' });
+      }
+
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
 };
+
+
+
