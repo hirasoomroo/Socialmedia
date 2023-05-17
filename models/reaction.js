@@ -1,4 +1,4 @@
-import { reactionSchema, Types } from 'mongoose';
+const { Schema, Types } = require ('mongoose');
 
 const reactionSchema = new Schema(
     {
@@ -27,4 +27,4 @@ const reactionSchema = new Schema(
     }
 );
 
-export default reactionSchema;
+module.exports = reactionSchema;

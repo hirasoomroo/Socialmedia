@@ -1,15 +1,15 @@
-import { User, Thought } from '../models';
+const { User, Thought } = require ('../models');
 
 const userController = {
   // creating A new user 
   newUser({ body }, res) {
-    User.new(body)
+    User.create(body)
       .then(dbUserData => res.json(dbUserData))
       .catch(err => res.status(400).json(err));
   },
 
   // GET all users
-  getAllUsers(res) {
+  getAllUsers(req, res) {
     User.find({})
       .select('-__v')
       .sort({ _id: -1 })
@@ -75,7 +75,7 @@ const userController = {
   },
   //add friend on social
   addFriend({ params }, res) {
-    User.findOneAndAdd
+    User.findOneAndUpdate
       ({ _id: params.userId },
         { $push: { friends: params.friendId } },
         { new: true })
@@ -92,7 +92,7 @@ const userController = {
 
   // delete a friend on social
   deleteFriend({ params }, res) {
-    User.findOneAndremove({ _id: params.userId },
+    User.findOneAndUpdate({ _id: params.userId },
       { $pull: { friends: params.friendId } },
       { new: true })
       .then(dbUserData => {
@@ -106,4 +106,4 @@ const userController = {
       .catch(err => res.json(err))
   },
 };
-export default userController;
+module.exports= userController;

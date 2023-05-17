@@ -1,4 +1,4 @@
-import { Thought, User } from "../models";
+const { Thought, User } = require ( "../models");
 
 const Thoughtcontroller = {
 
